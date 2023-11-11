@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TrangChuComponent } from './trang-chu/trang-chu.component';
-import { ProductComponent } from './product/product.component';
+import { ProductComponent } from './product-share/product/product.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
@@ -12,7 +12,7 @@ const routes: Routes = [
         path: 'dashboard', component: DashboardComponent
       },
       {
-        path: 'product', component: ProductComponent, data: { breadcrumb: 'Sản phẩm' }
+        path: 'product', loadChildren: () => import('./product-share/product-share.module').then(m => m.ProductShareModule)
       }
     ]
   }

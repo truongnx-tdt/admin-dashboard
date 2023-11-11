@@ -11,6 +11,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from "@angular/material/dialog";
+
 @NgModule({
     exports: [
         FlexLayoutModule,
@@ -25,7 +28,8 @@ import { MatSelectModule } from '@angular/material/select';
         MatProgressBarModule,
         MatRadioModule,
         MatSelectModule,
-
+        MatPaginatorModule,
+        MatDialogModule
     ]
 })
 

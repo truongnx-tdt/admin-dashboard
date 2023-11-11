@@ -1,0 +1,112 @@
+<div class="container mw-100">
+  <div class="card">
+    <div class="d-flex justify-content-between m-3">
+      <div class="d-flex align-items-center">
+        <h4 style="opacity: 0.5;">Danh sách sản phẩm</h4>
+      </div>
+      <a class="btn btn-success" role="button" style="border: none" (click)="openDialogAddProduct()">
+        Thêm mới &nbsp;<i class="fa fa-plus" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <div class="container">
+      <div class="d-flex align-items-center">
+        <div class="me-2">Tìm kiếm:</div>
+        <div class="me-2">
+          <input
+            type="text"
+            placeholder="Tên sản phẩm"
+            class="form-control"
+            [(ngModel)]="textFillter"
+            (ngModelChange)="filterResults()"
+            style="width: 20rem"
+          />
+        </div>
+        <div class="ms-auto">Số lượng hiển thị:</div>
+        <div>
+          <select
+            class="form-select form-select-sm"
+            (change)="onTableSizeChange($event)"
+          >
+            <option *ngFor="let item of tableSizes">{{ item }}</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th
+              (click)="sortObjects('id')"
+              style="cursor: pointer"
+              class="sortable-column"
+            >
+              ID <i class="fal fa-sort"></i>
+            </th>
+            <th
+              (click)="sortObjects('title')"
+              style="cursor: pointer"
+              class="sortable-column"
+            >
+              Title <i class="fal fa-sort"></i>
+            </th>
+            <th
+              (click)="sortObjects('body')"
+              style="cursor: pointer"
+              class="sortable-column"
+            >
+              Body <i class="fal fa-sort"></i>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let post of allObject ?? POSTS
+                | paginate
+                  : {
+                      itemsPerPage: tableSize,
+                      currentPage: page,
+                      totalItems: count
+                    };
+              let i = index
+            "
+          >
+            <td scope="row">{{ post.id }}</td>
+            <td>{{ post.title }}</td>
+            <td>{{ post.body }}</td>
+            <td>
+              <div class="d-flex input-group mb-3 flex-nowrap">
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="openDialogUpdate(post)"
+                >
+                  Sửa
+                </button>
+                <button
+                  class="btn btn-outline-secondary"
+                  type="button"
+                  (click)="processDelete()"
+                >
+                  Xóa
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
