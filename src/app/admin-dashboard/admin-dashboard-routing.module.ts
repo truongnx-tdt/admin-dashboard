@@ -6,13 +6,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: '', component: TrangChuComponent, data: { breadcrumb: 'Trang chủ' },
+    path: '', component: TrangChuComponent, data: { breadcrumb: { label: "Trang chủ" } },
     children: [
       {
-        path: 'dashboard', component: DashboardComponent
+        path: 'dashboard', component: DashboardComponent,
       },
       {
-        path: 'product', loadChildren: () => import('./product-share/product-share.module').then(m => m.ProductShareModule)
+        path: 'product', loadChildren: () => import('./product-share/product-share.module').then(m => m.ProductShareModule),
+        data: {
+          breadcrumb: { skip: true, alias: 'mentorAdd' }
+        }
       }
     ]
   }

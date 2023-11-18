@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { ProductUpdateComponent } from '../product-update/product-update.component';
 import { ProductAddComponent } from '../product-add/product-add.component';
+import { AUTO_STYLE } from '@angular/animations';
 
 const endpoint = 'https://jsonplaceholder.typicode.com/posts';
 @Component({
@@ -133,7 +134,10 @@ export class ProductComponent {
   //#region add product
   openDialogAddProduct() {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '400px';
+    dialogConfig.width = '1200px';
+    dialogConfig.autoFocus = false;
+    dialogConfig.disableClose = true;
+    dialogConfig.height = '750px';
     const diaRef = this.dialog.open(ProductAddComponent, dialogConfig);
 
     diaRef.afterClosed().subscribe(rs => {

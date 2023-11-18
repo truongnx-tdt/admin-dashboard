@@ -10,7 +10,10 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [authGuard],
-    loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule)
+    loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule),
+    data: {
+      breadcrumb: { skip: true, alias: 'mentorAdd' }
+    }
   },
   {
     path: '**', redirectTo: '', pathMatch: 'full'

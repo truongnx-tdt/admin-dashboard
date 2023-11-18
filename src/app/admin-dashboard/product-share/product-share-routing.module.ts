@@ -4,7 +4,7 @@ import { ProductComponent } from './product/product.component';
 
 const routes: Routes = [
   {
-    path: '', component: ProductComponent
+    path: '', component: ProductComponent, data: { breadcrumb: 'Sản phẩm' }
   }
 ];
 

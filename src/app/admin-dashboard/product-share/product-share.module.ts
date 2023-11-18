@@ -7,8 +7,8 @@ import { ProductUpdateComponent } from './product-update/product-update.componen
 import { ProductComponent } from './product/product.component';
 import { MaterialModule } from 'src/app/material.module';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 @NgModule({
   declarations: [
     ProductAddComponent,
@@ -19,8 +19,10 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     ProductShareRoutingModule,
     MaterialModule,
+    ReactiveFormsModule,
     NgxPaginationModule,
-    FormsModule
+    FormsModule,
+    AngularEditorModule
   ]
 })
 export class ProductShareModule { }
