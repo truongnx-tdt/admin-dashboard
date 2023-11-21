@@ -6,9 +6,3 @@ table {
   color: rgb(0, 123, 255);
 }
 
-::ng-deep .custom-modalbox {
-  mat-dialog-container {
-    
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
-  }
-}

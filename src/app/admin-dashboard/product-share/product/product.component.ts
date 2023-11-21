@@ -1,21 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { ProductUpdateComponent } from '../product-update/product-update.component';
 import { ProductAddComponent } from '../product-add/product-add.component';
 import { AUTO_STYLE } from '@angular/animations';
+import { ProductService } from '../product.service';
 
-const endpoint = 'https://jsonplaceholder.typicode.com/posts';
 @Component({
   selector: 'app-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent {
-  constructor(private http: HttpClient, private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private service: ProductService) {
   }
   //#region  fillter
   textFillter: any;
@@ -25,7 +25,7 @@ export class ProductComponent {
       this.ngOnInit();
     }
     this.allObject = this.POSTS.filter((res: any) => {
-      return res.title.toLowerCase().includes(this.textFillter.toLowerCase())
+      return res.productName.toLowerCase().includes(this.textFillter.toLowerCase())
     }
     );
   }
@@ -52,20 +52,8 @@ export class ProductComponent {
   }
   //#endregion
   //#region  get data
-  fetchPosts(): void {
-    this.getAllPosts().subscribe(
-      (response) => {
-        this.POSTS = response;
-        console.log(response);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }
-  getAllPosts(): Observable<any> {
-    return this.http.get(endpoint);
-  }
+  private subscription!: Subscription;
+
   page: number = 1;
   count: number = 0;
   tableSize: number = 10;
@@ -73,21 +61,22 @@ export class ProductComponent {
   POSTS: any;
   onTableDataChange(event: any) {
     this.page = event;
-    // this.POSTS = ELEMENT_DATA;
-    // this.fetchPosts();
+
   }
   onTableSizeChange(event: any): void {
     this.tableSize = event.target.value;
     this.page = 1;
-    // this.POSTS = ELEMENT_DATA;
-    // this.fetchPosts();
+
   }
   //#endregion
 
   ngOnInit(): void {
-    // this.POSTS = ELEMENT_DATA;
-    this.fetchPosts();
-    // this.tableSizes.push(ELEMENT_DATA.length);
+    this.subscription = this.service.data$.subscribe(data => {
+      this.POSTS = data;
+    });
+
+    // Khi component được khởi tạo, fetch dữ liệu lần đầu
+    this.service.fetchData();
   }
 
 
@@ -116,17 +105,15 @@ export class ProductComponent {
   //#region update product
   openDialogUpdate(data: any) {
     const dialogConfig = new MatDialogConfig();
-
-
-    dialogConfig.panelClass = 'custom-modalbox';
     dialogConfig.data = data;
-    dialogConfig.enterAnimationDuration = '1000ms'
-    dialogConfig.exitAnimationDuration = '500ms'
-
+    dialogConfig.width = '1200px';
+    dialogConfig.autoFocus = false;
+    dialogConfig.disableClose = true;
+    dialogConfig.height = '750px';
     const dialogRef = this.dialog.open(ProductUpdateComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('clode update form');
     });
   }
   //#endregion
@@ -145,5 +132,16 @@ export class ProductComponent {
     })
   }
   //#endregion
+
+
+  ngOnDestroy(): void {
+    //Called once, before the instance is destroyed.
+    //Add 'implements OnDestroy' to the class.
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      console.log('destroy');
+    }
+
+  }
 
 }
