@@ -38,6 +38,14 @@ export class ProductService {
     return this.http.put(environment.apiUrl + '/api/update-product', item, options)
   }
 
+
+  deleteProduct(productId: any): Observable<any>{
+    const options = {
+      headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
+    }
+    return this.http.delete(environment.apiUrl + '/api/delete-product?productId='+productId, options);
+  }
+
   getToken() {
     // Lấy token từ session
     return sessionStorage.getItem("token");

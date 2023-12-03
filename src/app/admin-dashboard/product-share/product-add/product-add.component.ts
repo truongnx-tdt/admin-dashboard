@@ -35,10 +35,10 @@ export class ProductAddComponent {
       productCategoryId: this.formBuilder.control('', Validators.required),
       productBrand: this.formBuilder.control('', Validators.required),
       imageProducts: this.formBuilder.control(['']),
-      chipProduct: '',
-      ramProduct: '',
-      romProduct: '',
-      screenProduct: '',
+      chipProduct: this.formBuilder.control(null),
+      ramProduct: this.formBuilder.control(null),
+      romProduct: this.formBuilder.control(null),
+      screenProduct: this.formBuilder.control(null),
     });
   }
 

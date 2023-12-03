@@ -16,6 +16,8 @@ const routes: Routes = [
         data: {
           breadcrumb: { skip: true, alias: 'mentorAdd' }
         }
+      }, {
+        path: 'order', loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule)
       }
     ]
   }

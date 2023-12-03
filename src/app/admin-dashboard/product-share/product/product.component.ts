@@ -81,7 +81,7 @@ export class ProductComponent {
 
 
   //#region  delete product
-  processDelete() {
+  processDelete(item: any) {
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -92,11 +92,22 @@ export class ProductComponent {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your file has been deleted.",
-          icon: "success"
+        this.service.deleteProduct(item).subscribe(res => {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Đã xóa thành công sản phẩm.",
+            icon: "success"
+          });
+          this.service.fetchData();
+        }, error => {
+          console.log(error)
+          Swal.fire({
+            title: "Error!",
+            text: "Có lỗi xảy ra trong quá trình thực hiện xóa.",
+            icon: "error"
+          });
         });
+
       }
     });
   }

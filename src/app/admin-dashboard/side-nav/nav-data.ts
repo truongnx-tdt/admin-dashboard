@@ -10,9 +10,9 @@ export const navbarData = [
         label: 'Products'
     },
     {
-        routeLink: '',
+        routeLink: 'order',
         icon: 'fal fa-chart-bar',
-        label: 'Statistics'
+        label: 'Orders'
     },
     {
         routeLink: '',

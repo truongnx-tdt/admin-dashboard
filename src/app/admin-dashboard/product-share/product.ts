@@ -133,6 +133,7 @@ export const DATA_CHIP_LAPTOP =
 
   export const DATA_BRAND_DT = [
     { value: 'apple', label: 'Apple' },
+    { value: 'msi', label: 'MSI' },
     { value: 'samsung', label: 'Samsung' },
     { value: 'xiaomi', label: 'Xiaomi' },
     { value: 'oppo', label: 'OPPO' },
@@ -150,4 +151,5 @@ export const DATA_CHIP_LAPTOP =
     { value: 'tcl', label: 'TCL' },
     { value: 'itel', label: 'Itel' },
     { value: 'lg', label: 'LG' },
+    { value: 'huawei', label: 'Huawei' },
   ];
