@@ -43,7 +43,7 @@ export class LoginComponent {
           const tokens = this.response.response.data.token.split(".");
           const tokenFinal = tokens.slice(0, tokens.length - 1).join(".");
           if (this.response.response.data.role === 1) {
-            sessionStorage.setItem('token', tokenFinal);
+            sessionStorage.setItem('token_admin', tokenFinal);
             this.router.navigate(['/admin/dashboard']);
           } else {
             this.toastr.error("Sai tài khoản hoặc mật khẩu", 'Error');

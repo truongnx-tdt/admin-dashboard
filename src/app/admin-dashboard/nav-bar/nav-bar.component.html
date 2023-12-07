@@ -2,7 +2,7 @@
 <nav
   class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
 >
-  <div style="width: 50rem;"><app-breadcrumd></app-breadcrumd></div>
+  <div style="width: 50rem"><app-breadcrumd></app-breadcrumd></div>
   <div class="dropdown no-arrow ml-auto">
     <a
       class="nav-link dropdown-toggle"
@@ -29,9 +29,9 @@
       <li>
         <a
           class="dropdown-item"
-          routerLink=""
+          role="button"
           data-toggle="modal"
-          data-target="#logoutModal"
+          (click)="clickLogout()"
         >
           <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
           Logout

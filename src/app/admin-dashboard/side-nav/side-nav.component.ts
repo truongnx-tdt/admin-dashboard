@@ -1,6 +1,7 @@
 import { Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { navbarData } from './nav-data';
 import { animate, keyframes, style, transition, trigger } from '@angular/animations';
+import { AuthService } from 'src/app/service/auth.service';
 
 
 interface SideNavToggle {
@@ -39,6 +40,12 @@ export class SideNavComponent {
   screenWidth = 0;
   navData = navbarData;
 
+  /**
+   *
+   */
+  constructor(private auth: AuthService) {
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.screenWidth = window.innerWidth;
@@ -63,4 +70,10 @@ export class SideNavComponent {
     this.collapsed = false;
     this.onToggleSideNav.emit({ collapsed: this.collapsed, screenWidth: this.screenWidth })
   }
+
+
+  clickLogout() {
+    this.auth.doLogout();
+  }
+
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Product } from '../product';
 import { OrderManagerService } from '../order-manager.service';
 
 @Component({
@@ -7,38 +6,36 @@ import { OrderManagerService } from '../order-manager.service';
   templateUrl: './orde-page.component.html',
   styleUrls: ['./orde-page.component.scss']
 })
-export class OrdePageComponent {
-  products!: Product[];
 
+
+export class OrdePageComponent {
+  products!: any[];
+  first = 0;
+  rows = 10;
   constructor(private productService: OrderManagerService) { }
 
   ngOnInit() {
-    this.productService.getProductsWithOrdersSmall().then((data) => (this.products = data));
+    this.productService.getOrderData().subscribe((data) => {
+      this.products = data
+      console.log(data)
+    });
+
+
   }
 
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warning';
-      case 'OUTOFSTOCK':
-        return 'danger';
-      default:
-        return 'info';
-    }
+  pageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
 
-  getStatusSeverity(status: string) {
-    switch (status) {
-      case 'PENDING':
-        return 'warning';
-      case 'DELIVERED':
-        return 'success';
-      case 'CANCELLED':
-        return 'danger';
-      default:
-        return 'info';
-    }
+
+  // Trong component.ts
+extractInputValue(event: Event): string {
+  if (event.target instanceof HTMLInputElement) {
+    console.log(event.target.value)
+    return event.target.value;
   }
+  return '';
+}
+
 }

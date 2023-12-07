@@ -2,28 +2,68 @@
   <div class="container mw-100">
     <div class="card">
       <p-table
+        #dt1
         [value]="products"
-        dataKey="name"
-        [tableStyle]="{ 'min-width': '60rem' }"
+        dataKey="orderId"
+        [paginator]="true"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        (onPage)="pageChange($event)"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [filterDelay]="0"
+        [globalFilterFields]="[
+          'customerName',
+          'customerPhone',
+          'customerEmail'
+        ]"
       >
+        <ng-template pTemplate="caption">
+          <div class="d-flex align-items-center justify-content-between">
+            <h5 class="m-2">Manage Orders</h5>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input
+                pInputText
+                type="text"
+                (input)="
+                  dt1.filterGlobal(extractInputValue($event), 'contains')
+                "
+                placeholder="Search..."
+              />
+            </span>
+          </div>
+        </ng-template>
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 5rem"></th>
-            <th pSortableColumn="name">
-              Name <p-sortIcon field="name"></p-sortIcon>
+            <th pSortableColumn="orderId">
+              Id <p-sortIcon field="orderId"></p-sortIcon>
             </th>
-            <th>Image</th>
-            <th pSortableColumn="price">
-              Price <p-sortIcon field="price"></p-sortIcon>
+            <th pSortableColumn="customerName">
+              Name <p-sortIcon field="customerName"></p-sortIcon>
             </th>
-            <th pSortableColumn="category">
-              Category <p-sortIcon field="category"></p-sortIcon>
+            <th pSortableColumn="customerPhone">
+              Phone <p-sortIcon field="customerPhone"></p-sortIcon>
             </th>
-            <th pSortableColumn="rating">
-              Reviews <p-sortIcon field="rating"></p-sortIcon>
+            <th pSortableColumn="customerEmail">
+              Email <p-sortIcon field="customerEmail"></p-sortIcon>
             </th>
-            <th pSortableColumn="inventoryStatus">
-              Status <p-sortIcon field="inventoryStatus"></p-sortIcon>
+            <th pSortableColumn="methodPayment">
+              Payment <p-sortIcon field="methodPayment"></p-sortIcon>
+            </th>
+            <th pSortableColumn="statusOrder">
+              Status <p-sortIcon field="statusOrder"></p-sortIcon>
+            </th>
+            <th pSortableColumn="totalAmount">
+              Amount <p-sortIcon field="totalAmount"></p-sortIcon>
+            </th>
+            <th pSortableColumn="note">
+              note <p-sortIcon field="note"></p-sortIcon>
+            </th>
+            <th pSortableColumn="addressReceive">
+              addressReceive <p-sortIcon field="addressReceive"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
@@ -39,32 +79,30 @@
                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               ></button>
             </td>
-            <td>{{ product.name }}</td>
             <td>
-              <img
-                [src]="
-                  'https://primefaces.org/cdn/primeng/images/demo/product/' +
-                  product.image
-                "
-                [alt]="product.name"
-                width="50"
-                class="shadow-4"
-              />
+              {{ product.orderId }}
             </td>
-            <td>{{ product.price | currency : "USD" }}</td>
-            <td>{{ product.category }}</td>
+            <td>{{ product.customerName }}</td>
+            <td>{{ product.customerPhone }}</td>
+            <td>{{ product.customerEmail }}</td>
             <td>
-              <p-rating
-                [ngModel]="product.rating"
-                [readonly]="true"
-                [cancel]="false"
-              ></p-rating>
+              {{ product.methodPayment === "1" ? "VnPay" : "Trả sau" }}
             </td>
             <td>
-              <p-tag
-                [value]="product.inventoryStatus"
-                [severity]="getSeverity(product.inventoryStatus)"
-              ></p-tag>
+              {{
+                product.statusOrder === "0"
+                  ? "Đã thanh toán"
+                  : "Chưa thanh toán"
+              }}
+            </td>
+            <td>
+              {{ product.totalAmount | currency : "VND" }}
+            </td>
+            <td>
+              {{ product.note }}
+            </td>
+            <td>
+              {{ product.addressReceive }}
             </td>
           </tr>
         </ng-template>
@@ -72,41 +110,44 @@
           <tr>
             <td colspan="7">
               <div class="p-3">
-                <p-table [value]="product.orders" dataKey="id">
+                <p-table
+                  [value]="product.productOrderListDataModels"
+                  dataKey="orderId"
+                >
                   <ng-template pTemplate="header">
                     <tr>
-                      <th pSortableColumn="id">
-                        Id <p-sortIcon field="price"></p-sortIcon>
+                      <th style="width: 5rem"></th>
+                      <th pSortableColumn="productName">
+                        Product Name
+                        <p-sortIcon field="productName"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="customer">
-                        Customer <p-sortIcon field="customer"></p-sortIcon>
+                      <th pSortableColumn="quantity">
+                        Quantity
+                        <p-sortIcon field="quantity"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="date">
-                        Date <p-sortIcon field="date"></p-sortIcon>
+                      <th pSortableColumn="price">
+                        Price <p-sortIcon field="price"></p-sortIcon>
                       </th>
-                      <th pSortableColumn="amount">
-                        Amount <p-sortIcon field="amount"></p-sortIcon>
-                      </th>
-                      <th pSortableColumn="status">
-                        Status <p-sortIcon field="status"></p-sortIcon>
-                      </th>
-                      <th style="width: 4rem"></th>
-                    </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-order>
+                      <th pSortableColumn="price">
+                        Total <p-sortIcon field="price"></p-sortIcon>
+                      </th></tr
+                  ></ng-template>
+
+                  <ng-template pTemplate="body" let-productOrderListDataModels>
                     <tr>
-                      <td>{{ order.id }}</td>
-                      <td>{{ order.customer }}</td>
-                      <td>{{ order.date }}</td>
-                      <td>{{ order.amount | currency : "USD" }}</td>
+                      <th style="width: 5rem"></th>
+                      <td>{{ productOrderListDataModels.productName }}</td>
+                      <td>{{ productOrderListDataModels.quantity }}</td>
                       <td>
-                        <p-tag
-                          [value]="order.status"
-                          [severity]="getStatusSeverity(order.status)"
-                        ></p-tag>
+                        {{
+                          productOrderListDataModels.price | currency : "VND"
+                        }}
                       </td>
                       <td>
-                        <p-button type="button" icon="pi pi-plus"></p-button>
+                        {{
+                          productOrderListDataModels.quantity *
+                            productOrderListDataModels.price | currency : "VND"
+                        }}
                       </td>
                     </tr>
                   </ng-template>

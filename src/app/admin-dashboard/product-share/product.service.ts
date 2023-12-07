@@ -48,7 +48,7 @@ export class ProductService {
 
   getToken() {
     // Lấy token từ session
-    return sessionStorage.getItem("token");
+    return sessionStorage.getItem("token_admin");
   }
 
   getListProudct(): Observable<any> {
