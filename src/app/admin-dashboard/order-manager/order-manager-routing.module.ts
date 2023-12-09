@@ -4,7 +4,7 @@ import { OrdePageComponent } from './orde-page/orde-page.component';
 
 const routes: Routes = [
   {
-    path: '', component: OrdePageComponent
+    path: '', component: OrdePageComponent, data: {breadcrumb: 'Order'}
   }
 ];
 

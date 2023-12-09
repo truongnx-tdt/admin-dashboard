@@ -15,3 +15,35 @@ body {
   position: relative;
   font-family: "Roboto", sans-serif;
 }
+
+.p-datatable-table {
+  font-size: 14px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  .p-datatable-tbody {
+    tr {
+      flex-wrap: nowrap;
+      width: 100%;
+      border-top: 0.1px solid gray;
+    }
+
+    td {
+      padding: 5px 08px 5px 0;
+      .p-tag {
+        font-size: 10px;
+        padding: 5px;
+      }
+    }
+  }
+}
+
+.p-paginator {
+  margin: 10px;
+  .p-paginator-rpp-options {
+    align-items: center;
+  }
+
+  .p-dropdown-items {
+    padding: 0px;
+    align-items: center;
+  }
+}

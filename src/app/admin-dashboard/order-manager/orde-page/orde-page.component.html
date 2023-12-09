@@ -21,9 +21,9 @@
       >
         <ng-template pTemplate="caption">
           <div class="d-flex align-items-center justify-content-between">
-            <h5 class="m-2">Manage Orders</h5>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
+            <h5 class="m-2 bold">Manage Orders</h5>
+            <span>
+              Search:
               <input
                 pInputText
                 type="text"
@@ -31,6 +31,7 @@
                   dt1.filterGlobal(extractInputValue($event), 'contains')
                 "
                 placeholder="Search..."
+                class="p-1 m-2"
               />
             </span>
           </div>
@@ -39,7 +40,7 @@
           <tr>
             <th style="width: 5rem"></th>
             <th pSortableColumn="orderId">
-              Id <p-sortIcon field="orderId"></p-sortIcon>
+              Order Id <p-sortIcon field="orderId"></p-sortIcon>
             </th>
             <th pSortableColumn="customerName">
               Name <p-sortIcon field="customerName"></p-sortIcon>
@@ -59,11 +60,14 @@
             <th pSortableColumn="totalAmount">
               Amount <p-sortIcon field="totalAmount"></p-sortIcon>
             </th>
+            <th pSortableColumn="reciveType">
+              Recive Type <p-sortIcon field="reciveType"></p-sortIcon>
+            </th>
             <th pSortableColumn="note">
-              note <p-sortIcon field="note"></p-sortIcon>
+              Note <p-sortIcon field="note"></p-sortIcon>
             </th>
             <th pSortableColumn="addressReceive">
-              addressReceive <p-sortIcon field="addressReceive"></p-sortIcon>
+              Address Receive <p-sortIcon field="addressReceive"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
@@ -75,7 +79,7 @@
                 pButton
                 pRipple
                 [pRowToggler]="product"
-                class="p-button-text p-button-rounded p-button-plain"
+                class="p-button-text p-button-rounded p-button-plain rounded-circle"
                 [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               ></button>
             </td>
@@ -83,20 +87,28 @@
               {{ product.orderId }}
             </td>
             <td>{{ product.customerName }}</td>
-            <td>{{ product.customerPhone }}</td>
+            <td style="color: red">{{ product.customerPhone }}</td>
             <td>{{ product.customerEmail }}</td>
             <td>
               {{ product.methodPayment === "1" ? "VnPay" : "Trả sau" }}
             </td>
             <td>
-              {{
+              <!-- {{
                 product.statusOrder === "0"
                   ? "Đã thanh toán"
                   : "Chưa thanh toán"
-              }}
+              }} -->
+              <p-tag [severity]="getSeverity(product.statusOrder)">{{
+                product.statusOrder === "0"
+                  ? "Đã thanh toán"
+                  : "Chưa thanh toán"
+              }}</p-tag>
+            </td>
+            <td style="color: red">
+              {{ product.totalAmount | currency : "VND" }}
             </td>
             <td>
-              {{ product.totalAmount | currency : "VND" }}
+              {{ product.reciveType === "0" ? "Tại nhà" : "Cửa hhàng" }}
             </td>
             <td>
               {{ product.note }}
@@ -104,11 +116,29 @@
             <td>
               {{ product.addressReceive }}
             </td>
+            <td class="d-flex">
+              <button
+                pButton
+                pRipple
+                icon="pi pi-pencil"
+                class="p-button-rounded rounded-circle p-button-success"
+                (click)="editProduct(product)"
+                style="width: 40px; height: 40px; margin-right: 2px"
+              ></button>
+              <button
+                pButton
+                pRipple
+                icon="pi pi-trash"
+                class="p-button-rounded rounded-circle p-button-warning"
+                (click)="deleteProduct(product)"
+                style="width: 40px; height: 40px"
+              ></button>
+            </td>
           </tr>
         </ng-template>
         <ng-template pTemplate="rowexpansion" let-product>
           <tr>
-            <td colspan="7">
+            <td colspan="9">
               <div class="p-3">
                 <p-table
                   [value]="product.productOrderListDataModels"
@@ -116,7 +146,7 @@
                 >
                   <ng-template pTemplate="header">
                     <tr>
-                      <th style="width: 5rem"></th>
+                      <th style="width: 10rem">#</th>
                       <th pSortableColumn="productName">
                         Product Name
                         <p-sortIcon field="productName"></p-sortIcon>
@@ -133,9 +163,13 @@
                       </th></tr
                   ></ng-template>
 
-                  <ng-template pTemplate="body" let-productOrderListDataModels>
+                  <ng-template
+                    pTemplate="body"
+                    let-productOrderListDataModels
+                    let-rowIndex="rowIndex"
+                  >
                     <tr>
-                      <th style="width: 5rem"></th>
+                      <th style="width: 10rem">{{ rowIndex }}</th>
                       <td>{{ productOrderListDataModels.productName }}</td>
                       <td>{{ productOrderListDataModels.quantity }}</td>
                       <td>
@@ -167,3 +201,106 @@
     </div>
   </div>
 </section>
+
+<!-- dialog -->
+<p-dialog
+  [(visible)]="productDialog"
+  [style]="{ width: '750px' }"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <ng-template pTemplate="content">
+    <div class="card">
+      <h5 class="card-title px-2">Order Detail</h5>
+      <div class="card-body">
+        <label for="name">OrderId</label>
+        <input
+          type="text"
+          pInputText
+          id="name"
+          [(ngModel)]="product.orderId"
+          required
+          autofocus
+          disabled="true"
+        />
+        <small class="p-error" *ngIf="submitted && !product.orderId"
+          >Order Id is required.</small
+        >
+
+        <div class="field">
+          <label for="description">Adrress Receive</label>
+          <textarea
+            id="description"
+            pInputTextarea
+            [(ngModel)]="product.addressReceive"
+            required
+            rows="3"
+            cols="20"
+          ></textarea>
+        </div>
+
+        <div class="field">
+          <label for="inventoryStatus">Status</label>
+          <p-dropdown
+            [(ngModel)]="product.statusOrder"
+            inputId="inventoryStatus"
+            [options]="statuses"
+          >
+            <ng-template pTemplate="selectedItem">
+              <p-tag [severity]="getSeverity(product.statusOrder)">{{
+                product.statusOrder === "0"
+                  ? "Đã thanh toán"
+                  : "Chưa thanh toán"
+              }}</p-tag>
+            </ng-template>
+            <ng-template let-option pTemplate="item">
+              <p-tag
+                [value]="option.label"
+                [severity]="getSeverity(option.value)"
+              ></p-tag>
+            </ng-template>
+          </p-dropdown>
+        </div>
+
+        <div class="formgrid grid">
+          <div class="field col">
+            <label for="price">Price</label>
+            <p-inputNumber
+              id="price"
+              [(ngModel)]="product.price"
+              mode="currency"
+              currency="USD"
+              locale="en-US"
+            ></p-inputNumber>
+          </div>
+          <div class="field col">
+            <label for="quantity">Quantity</label>
+            <p-inputNumber
+              id="quantity"
+              [(ngModel)]="product.quantity"
+            ></p-inputNumber>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancel"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="hideDialog()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Save"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="saveProduct()"
+    ></button>
+  </ng-template>
+</p-dialog>
