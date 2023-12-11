@@ -43,7 +43,7 @@
               Order Id <p-sortIcon field="orderId"></p-sortIcon>
             </th>
             <th pSortableColumn="customerName">
-              Name <p-sortIcon field="customerName"></p-sortIcon>
+              Customer Name <p-sortIcon field="customerName"></p-sortIcon>
             </th>
             <th pSortableColumn="customerPhone">
               Phone <p-sortIcon field="customerPhone"></p-sortIcon>
@@ -56,18 +56,47 @@
             </th>
             <th pSortableColumn="statusOrder">
               Status <p-sortIcon field="statusOrder"></p-sortIcon>
+              <p-columnFilter
+                field="statusOrder"
+                matchMode="equals"
+                display="menu"
+                class="ml-auto"
+              >
+                <ng-template
+                  pTemplate="filter"
+                  let-value
+                  let-filter="filterCallback"
+                >
+                  <p-dropdown
+                    [ngModel]="value"
+                    [options]="statuses"
+                    (onChange)="filter($event.value)"
+                    placeholder="Payment method"
+                  >
+                    <ng-template let-option pTemplate="item">
+                      <p-tag
+                        [value]="option.label"
+                        [severity]="getSeverity(option.value)"
+                      ></p-tag>
+                    </ng-template>
+                  </p-dropdown>
+                </ng-template>
+              </p-columnFilter>
             </th>
             <th pSortableColumn="totalAmount">
               Amount <p-sortIcon field="totalAmount"></p-sortIcon>
             </th>
             <th pSortableColumn="reciveType">
-              Recive Type <p-sortIcon field="reciveType"></p-sortIcon>
+              Receive Type <p-sortIcon field="reciveType"></p-sortIcon>
             </th>
             <th pSortableColumn="note">
               Note <p-sortIcon field="note"></p-sortIcon>
             </th>
             <th pSortableColumn="addressReceive">
               Address Receive <p-sortIcon field="addressReceive"></p-sortIcon>
+            </th>
+            <th pSortableColumn="orderDateAt">
+              Order Date <p-sortIcon field="orderDateAt"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
@@ -84,25 +113,28 @@
               ></button>
             </td>
             <td>
-              {{ product.orderId }}
+              <strong>{{ product.orderId }}</strong>
             </td>
             <td>{{ product.customerName }}</td>
             <td style="color: red">{{ product.customerPhone }}</td>
             <td>{{ product.customerEmail }}</td>
             <td>
-              {{ product.methodPayment === "1" ? "VnPay" : "Trả sau" }}
+              {{ product.methodPayment === "1" ? "VnPay" : "Trả sau"
+              }}<img
+                *ngIf="product.methodPayment === '1'"
+                src="assets/imgs/icon/Icon-VNPAY-QR.png"
+                alt=""
+                srcset=""
+                width="20px"
+                height="20px"
+              />
             </td>
             <td>
-              <!-- {{
-                product.statusOrder === "0"
-                  ? "Đã thanh toán"
-                  : "Chưa thanh toán"
-              }} -->
-              <p-tag [severity]="getSeverity(product.statusOrder)">{{
-                product.statusOrder === "0"
-                  ? "Đã thanh toán"
-                  : "Chưa thanh toán"
-              }}</p-tag>
+              <span class="p-column-title">Status</span>
+              <p-tag
+                [value]="getStatusOrder(product.statusOrder)"
+                [severity]="getSeverity(product.statusOrder)"
+              ></p-tag>
             </td>
             <td style="color: red">
               {{ product.totalAmount | currency : "VND" }}
@@ -116,8 +148,12 @@
             <td>
               {{ product.addressReceive }}
             </td>
+            <td>
+              {{ product.orderDateAt }}
+            </td>
             <td class="d-flex">
               <button
+                *ngIf="product.statusOrder !== '0'"
                 pButton
                 pRipple
                 icon="pi pi-pencil"
@@ -126,6 +162,7 @@
                 style="width: 40px; height: 40px; margin-right: 2px"
               ></button>
               <button
+                *ngIf="product.statusOrder !== '0'"
                 pButton
                 pRipple
                 icon="pi pi-trash"
@@ -213,73 +250,121 @@
     <div class="card">
       <h5 class="card-title px-2">Order Detail</h5>
       <div class="card-body">
-        <label for="name">OrderId</label>
-        <input
-          type="text"
-          pInputText
-          id="name"
-          [(ngModel)]="product.orderId"
-          required
-          autofocus
-          disabled="true"
-        />
-        <small class="p-error" *ngIf="submitted && !product.orderId"
-          >Order Id is required.</small
-        >
+        <label>OrderId:&nbsp;{{ product.orderId }}</label>
 
-        <div class="field">
-          <label for="description">Adrress Receive</label>
-          <textarea
-            id="description"
-            pInputTextarea
-            [(ngModel)]="product.addressReceive"
-            required
-            rows="3"
-            cols="20"
-          ></textarea>
-        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="d-flex flex-column bd-highlight mb-3">
+              <span
+                ><strong>Name:</strong>&nbsp;{{ product.customerName }}</span
+              >
+              <span
+                ><strong>Phone number:</strong>&nbsp;{{
+                  product.customerPhone
+                }}</span
+              >
+              <span
+                ><strong>Email</strong>:&nbsp;{{ product.customerEmail }}</span
+              >
+              <span
+                ><strong>Payment method:</strong>&nbsp;{{
+                  product.methodPayment === "1" ? "VnPay" : "Trả sau"
+                }}
+                <img
+                  *ngIf="product.methodPayment === '1'"
+                  src="assets/imgs/icon/Icon-VNPAY-QR.png"
+                  alt=""
+                  srcset=""
+                  width="20px"
+                  height="20px"
+              /></span>
+              <span
+                ><strong>Receive type:</strong>&nbsp;
+                {{ product.reciveType === "0" ? "Tại nhà" : "Cửa hhàng" }}</span
+              >
+              <span><strong>Note:</strong>&nbsp; {{ product.note }}</span>
+              <span
+                ><strong>Order Date At:</strong>&nbsp;
+                {{ product.orderDateAt }}</span
+              >
+            </div>
 
-        <div class="field">
-          <label for="inventoryStatus">Status</label>
-          <p-dropdown
-            [(ngModel)]="product.statusOrder"
-            inputId="inventoryStatus"
-            [options]="statuses"
-          >
-            <ng-template pTemplate="selectedItem">
-              <p-tag [severity]="getSeverity(product.statusOrder)">{{
-                product.statusOrder === "0"
-                  ? "Đã thanh toán"
-                  : "Chưa thanh toán"
-              }}</p-tag>
-            </ng-template>
-            <ng-template let-option pTemplate="item">
-              <p-tag
-                [value]="option.label"
-                [severity]="getSeverity(option.value)"
-              ></p-tag>
-            </ng-template>
-          </p-dropdown>
-        </div>
-
-        <div class="formgrid grid">
-          <div class="field col">
-            <label for="price">Price</label>
-            <p-inputNumber
-              id="price"
-              [(ngModel)]="product.price"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-            ></p-inputNumber>
+            <div class="field">
+              <label><strong>Adrress Receive</strong></label>
+              <textarea
+                pInputTextarea
+                [(ngModel)]="product.addressReceive"
+                required
+                rows="3"
+                cols="20"
+                disabled
+              ></textarea>
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <p-dropdown
+                [(ngModel)]="product.statusOrder"
+                [options]="statuses"
+              >
+                <ng-template let-option pTemplate="selectedItem">
+                  <p-tag
+                    [value]="option?.label"
+                    [severity]="getSeverity(product.statusOrder)"
+                  >
+                  </p-tag>
+                </ng-template>
+                <ng-template let-option pTemplate="item">
+                  <p-tag
+                    [value]="option.label"
+                    [severity]="getSeverity(option.value)"
+                  ></p-tag>
+                </ng-template>
+              </p-dropdown>
+            </div>
           </div>
-          <div class="field col">
-            <label for="quantity">Quantity</label>
-            <p-inputNumber
-              id="quantity"
-              [(ngModel)]="product.quantity"
-            ></p-inputNumber>
-          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <div class="table">
+          <table>
+            <tr>
+              <th>#</th>
+              <th>Product Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th>Total</th>
+            </tr>
+
+            <tr
+              *ngFor="
+                let productOrderListDataModels of product.productOrderListDataModels;
+                let i = index
+              "
+            >
+              <th>{{ i + 1 }}</th>
+              <td>{{ productOrderListDataModels.productName }}</td>
+              <td>{{ productOrderListDataModels.quantity }}</td>
+              <td>
+                {{ productOrderListDataModels.price | currency : "VND" }}
+              </td>
+              <td>
+                {{
+                  productOrderListDataModels.quantity *
+                    productOrderListDataModels.price | currency : "VND"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <strong style="color: #26debc">Total Amount:</strong>
+              </td>
+              <td style="font-weight: bold; color: red">
+                {{ product.totalAmount | currency : "VND" }}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -291,7 +376,7 @@
       pRipple
       label="Cancel"
       icon="pi pi-times"
-      class="p-button-text"
+      class="btn btn-outline-danger m-3"
       (click)="hideDialog()"
     ></button>
     <button
@@ -299,7 +384,7 @@
       pRipple
       label="Save"
       icon="pi pi-check"
-      class="p-button-text"
+      class="btn btn-outline-success m-3"
       (click)="saveProduct()"
     ></button>
   </ng-template>

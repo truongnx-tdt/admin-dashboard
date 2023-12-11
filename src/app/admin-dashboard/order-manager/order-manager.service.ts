@@ -14,13 +14,28 @@ export class OrderManagerService {
       headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
     }
     return this.http.get(environment.apiUrl + '/api/order-list', options).pipe(
-      map((res: any)=> res.response.data.orders)
+      map((res: any) => res.response.data.orders)
     )
   }
 
   getToken() {
     // Lấy token từ session
     return sessionStorage.getItem("token_admin");
+  }
+
+
+  deleteOrderItem(orderId: string): Observable<any> {
+    const options = {
+      headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
+    }
+    return this.http.delete(environment.apiUrl + '/api/detele-order?orderId=' + orderId, options).pipe(map((item: any) => item.response.data))
+  }
+
+  updateStatusOrder(orderId: string, statusNew: string) {
+    const options = {
+      headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
+    }
+    return this.http.post(environment.apiUrl + '/api/update-status-order?orderId=' + orderId + '&statusNew=' + statusNew, {}, options)
   }
 
 }

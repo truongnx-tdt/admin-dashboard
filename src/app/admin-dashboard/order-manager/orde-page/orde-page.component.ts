@@ -38,7 +38,6 @@ export class OrdePageComponent {
   }
 
 
-  // Trong component.ts
   extractInputValue(event: Event): string {
     if (event.target instanceof HTMLInputElement) {
       console.log(event.target.value)
@@ -66,6 +65,24 @@ export class OrdePageComponent {
     }
   }
 
+  getStatusOrder(status: string) {
+    switch (status) {
+      case '2':
+        return 'Đã hủy';
+
+      case '0':
+        return 'Đã thanh toán';
+
+      case '1':
+        return 'Chưa thanh toán';
+
+      case '3':
+        return 'Tình trạng';
+      default:
+        return 'warning';
+    }
+  }
+
   editProduct(product: any) {
     this.product = { ...product };
     this.productDialog = true;
@@ -80,9 +97,15 @@ export class OrdePageComponent {
       denyButtonText: 'Không'
     }).then((rs) => {
       if (rs.isConfirmed) {
-        this.products = this.products.filter((val) => val.orderId !== product.orderId);
-        this.product = {};
-        this.toastr.success('Delete successfuly!', 'Deleted');
+        this.productService.deleteOrderItem(product.orderId).subscribe(res => {
+          this.products = this.products.filter((val) => val.orderId !== product.orderId);
+          this.product = {};
+          this.toastr.success('Delete successfuly!', 'Deleted');
+        }, error => {
+          console.log(error)
+          this.toastr.error("Không thể xóa đơn hàng", 'error');
+        })
+
       }
     })
   }
@@ -94,27 +117,28 @@ export class OrdePageComponent {
 
   saveProduct() {
     this.submitted = true;
+    if (this.product.orderId) {
+      this.products[this.findIndexById(this.product.orderId)] = this.product;
 
-    if (this.product.name?.trim()) {
-      if (this.product.id) {
-        this.products[this.findIndexById(this.product.id)] = this.product;
-        this.toastr.success('Successful', 'Product Updated');
-      }
-      this.products = [...this.products];
-      this.productDialog = false;
-      this.product = {};
+      this.productService.updateStatusOrder(this.product.orderId, this.product.statusOrder).subscribe(res => {
+        this.toastr.success('Successful', 'Updated');
+      }, error => {
+        this.toastr.error('Error', 'Updated');
+      })
     }
+    this.products = [...this.products];
+    this.productDialog = false;
+    this.product = {};
   }
 
   findIndexById(id: string): number {
     let index = -1;
     for (let i = 0; i < this.products.length; i++) {
-      if (this.products[i].id === id) {
+      if (this.products[i].orderId === id) {
         index = i;
         break;
       }
     }
-
     return index;
   }
 
