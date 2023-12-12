@@ -1,7 +1,7 @@
+import { UserManageModule } from './user-manage/user-manage.module';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TrangChuComponent } from './trang-chu/trang-chu.component';
-import { ProductComponent } from './product-share/product/product.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
@@ -16,10 +16,17 @@ const routes: Routes = [
         data: {
           breadcrumb: { skip: true, alias: 'mentorAdd' }
         }
-      }, {
+      },
+      {
         path: 'order', loadChildren: () => import('./order-manager/order-manager.module').then(m => m.OrderManagerModule),
         data: {
           breadcrumb: { skip: true, alias: 'mentoarAdd' }
+        }
+      },
+      {
+        path: 'user', loadChildren: () => import('./user-manage/user-manage.module').then(m => m.UserManageModule),
+        data: {
+          breadcrumb: { skip: true, alias: 'mentoarsAdd' }
         }
       }
     ]

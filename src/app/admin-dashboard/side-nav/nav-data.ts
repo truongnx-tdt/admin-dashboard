@@ -15,9 +15,9 @@ export const navbarData = [
         label: 'Orders'
     },
     {
-        routeLink: '',
-        icon: 'fal fa-tags',
-        label: 'Coupens'
+        routeLink: 'user',
+        icon: 'fal fa-users',
+        label: 'User Manage'
     },
     {
         routeLink: '',
