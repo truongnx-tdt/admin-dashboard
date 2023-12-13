@@ -83,6 +83,9 @@
                 </ng-template>
               </p-columnFilter>
             </th>
+            <th pSortableColumn="statusReceive">
+              Status Receive <p-sortIcon field="statusReceive"></p-sortIcon>
+            </th>
             <th pSortableColumn="totalAmount">
               Amount <p-sortIcon field="totalAmount"></p-sortIcon>
             </th>
@@ -136,6 +139,13 @@
                 [severity]="getSeverity(product.statusOrder)"
               ></p-tag>
             </td>
+            <td>
+              <span class="p-column-title">Status</span>
+              <p-tag
+                [value]="getStatusOrderReceive(product.statusReceive)"
+                [severity]="getSeverityNew(product.statusReceive)"
+              ></p-tag>
+            </td>
             <td style="color: red">
               {{ product.totalAmount | currency : "VND" }}
             </td>
@@ -153,7 +163,7 @@
             </td>
             <td class="d-flex">
               <button
-                *ngIf="product.statusOrder !== '0'"
+              *ngIf="product.statusOrder !== '0' || product.statusReceive !== 1"
                 pButton
                 pRipple
                 icon="pi pi-pencil"
@@ -317,6 +327,27 @@
                   <p-tag
                     [value]="option.label"
                     [severity]="getSeverity(option.value)"
+                  ></p-tag>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="field">
+              <label>Receive Status </label>
+              <p-dropdown
+                [(ngModel)]="product.statusReceive"
+                [options]="statusesReceive"
+              >
+                <ng-template let-option pTemplate="selectedItem">
+                  <p-tag
+                    [value]="option?.label"
+                    [severity]="getSeverityNew(product.statusReceive)"
+                  >
+                  </p-tag>
+                </ng-template>
+                <ng-template let-option pTemplate="item">
+                  <p-tag
+                    [value]="option.label"
+                    [severity]="getSeverityNew(option.value)"
                   ></p-tag>
                 </ng-template>
               </p-dropdown>

@@ -17,6 +17,7 @@ export class OrdePageComponent {
   productDialog: boolean = false;
   submitted: boolean = false;
   statuses!: any[];
+  statusesReceive!: any[];
   constructor(private productService: OrderManagerService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -29,6 +30,11 @@ export class OrdePageComponent {
       { label: 'Đã thanh toán', value: '0' },
       { label: 'Chưa thanh toán', value: '1' },
       { label: 'Hủy', value: '2' }
+    ];
+    this.statusesReceive = [
+      { label: 'Đang vận chuyển', value: 0 },
+      { label: 'Đã nhận hàng', value: 1 },
+      { label: 'Hủy', value: 2 },
     ];
   }
 
@@ -65,6 +71,24 @@ export class OrdePageComponent {
     }
   }
 
+  getSeverityNew(status: number) {
+    switch (status) {
+      case 2:
+        return 'danger';
+
+      case 0:
+        return 'info';
+
+      case 1:
+        return 'success';
+
+      case 3:
+        return 'warning';
+      default:
+        return 'warning';
+    }
+  }
+
   getStatusOrder(status: string) {
     switch (status) {
       case '2':
@@ -78,6 +102,23 @@ export class OrdePageComponent {
 
       case '3':
         return 'Tình trạng';
+      default:
+        return 'warning';
+    }
+  }
+  getStatusOrderReceive(status: number) {
+    switch (status) {
+      case 2:
+        return 'Đã hủy';
+
+      case 0:
+        return 'Đang vận chuyển';
+
+      case 1:
+        return 'Đã giao hàng';
+
+      case 3:
+        return 'Chờ xác nhận';
       default:
         return 'warning';
     }
@@ -119,8 +160,10 @@ export class OrdePageComponent {
     this.submitted = true;
     if (this.product.orderId) {
       this.products[this.findIndexById(this.product.orderId)] = this.product;
-
-      this.productService.updateStatusOrder(this.product.orderId, this.product.statusOrder).subscribe(res => {
+      if (this.product.statusOrder === '2') {
+        this.product.statusReceive = 2;
+      }
+      this.productService.updateStatusOrder(this.product.orderId, this.product.statusOrder, this.product.statusReceive).subscribe(res => {
         this.toastr.success('Successful', 'Updated');
       }, error => {
         this.toastr.error('Error', 'Updated');

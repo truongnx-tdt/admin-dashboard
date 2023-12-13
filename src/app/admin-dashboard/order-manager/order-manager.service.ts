@@ -31,11 +31,11 @@ export class OrderManagerService {
     return this.http.delete(environment.apiUrl + '/api/detele-order?orderId=' + orderId, options).pipe(map((item: any) => item.response.data))
   }
 
-  updateStatusOrder(orderId: string, statusNew: string) {
+  updateStatusOrder(orderId: string, statusNew: string, statusReceive: number) {
     const options = {
       headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
     }
-    return this.http.post(environment.apiUrl + '/api/update-status-order?orderId=' + orderId + '&statusNew=' + statusNew, {}, options)
+    return this.http.post(environment.apiUrl + '/api/update-status-order?orderId=' + orderId + '&statusNew=' + statusNew + '&statusReceive=' + statusReceive, {}, options)
   }
 
 }
