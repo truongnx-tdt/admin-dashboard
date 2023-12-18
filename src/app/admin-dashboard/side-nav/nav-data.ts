@@ -20,9 +20,9 @@ export const navbarData = [
         label: 'User Manage'
     },
     {
-        routeLink: '',
-        icon: 'fal fa-file',
-        label: 'Pages'
+        routeLink: 'news',
+        icon: 'fal fa-newspaper',
+        label: 'News'
     },
     {
         routeLink: '',

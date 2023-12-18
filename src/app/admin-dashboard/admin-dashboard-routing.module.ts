@@ -28,6 +28,12 @@ const routes: Routes = [
         data: {
           breadcrumb: { skip: true, alias: 'mentoarsAdd' }
         }
+      },
+      {
+        path: 'news', loadChildren: () => import('../news-manage/news-manage.module').then(m => m.NewsManageModule),
+        data: {
+          breadcrumb: { skip: true, alias: 'mentoarsAdd' }
+        }
       }
     ]
   }

@@ -1,12 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
 import { ProductUpdateComponent } from '../product-update/product-update.component';
 import { ProductAddComponent } from '../product-add/product-add.component';
-import { AUTO_STYLE } from '@angular/animations';
 import { ProductService } from '../product.service';
 
 @Component({
