@@ -46,21 +46,21 @@
             <th class="sortable-column">#</th>
             <th style="cursor: pointer" class="sortable-column">Hình ảnh</th>
             <th
-              (click)="sortObjects('productName')"
+              (click)="sortObjects('title')"
               style="cursor: pointer"
               class="sortable-column"
             >
               Tiêu đề<i class="fal fa-sort"></i>
             </th>
             <th
-              (click)="sortObjects('productPrice')"
+              (click)="sortObjects('createUser')"
               style="cursor: pointer"
               class="sortable-column"
             >
               Người đăng <i class="fal fa-sort"></i>
             </th>
             <th
-              (click)="sortObjects('productSell')"
+              (click)="sortObjects('createAt')"
               style="cursor: pointer"
               class="sortable-column"
             >
@@ -95,6 +95,7 @@
                 role="button"
                 onmouseover="this.style.color='#00F'"
                 onMouseOut="this.style.color='#000'"
+                (click)="openUpdateForm(post.idNews)"
                 >{{ post.title }}</a
               >
             </td>
@@ -102,7 +103,7 @@
             <td>{{ post.createAt }}</td>
             <td>
               <div class="d-flex input-group mb-3 flex-nowrap">
-                <button class="btn btn-outline-secondary" type="button">
+                <button class="btn btn-outline-secondary" type="button" (click)="openUpdateForm(post.idNews)">
                   <i class="fal fa-pen-to-square"></i>
                 </button>
                 <button
@@ -212,6 +213,99 @@
                 (click)="processCreate()"
               >
                 Thêm mới
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</p-dialog>
+
+
+<!-- form update news -->
+<p-dialog
+  [(visible)]="updateDialog"
+  [style]="{ width: '1150px' }"
+  [modal]="true"
+  styleClass="p-fluid"
+>
+  <div class="container mt-3">
+    <h1 mat-dialog-title>{{ "Cập nhật tin tức mới" | uppercase }}</h1>
+
+    <section>
+      <div class="container mt-5">
+        <form [formGroup]="updateNews">
+          <div class="form-group mb-3">
+            <label for="productName">Tiêu đề:</label>
+            <input
+              required
+              formControlName="title"
+              type="text"
+              class="form-control"
+              id="productName"
+              placeholder="Nhập tiêu đề"
+            />
+          </div>
+          <div class="form-group mb-3">
+            <label class="m-3">Nội dung:</label>
+            <angular-editor
+              [config]="config"
+              id="editor1"
+              formControlName="content"
+            ></angular-editor>
+          </div>
+          <!-- select img -->
+          <div class="form-group mb-3">
+            <label for="productImages">Chọn ảnh tiêu đề:&nbsp;</label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="productImages"
+              (change)="onImagesSelected($event)"
+            />
+          </div>
+
+          <!-- Hiển thị danh sách các hình ảnh đã chọn -->
+          <div *ngIf="!selectedImage">
+            <strong>Chọn ảnh</strong>
+          </div>
+          <div *ngIf="selectedImage">
+            <h5>Ảnh đã chọn:</h5>
+            <div class="mb-2 position-relative">
+              <img
+                [src]="selectedImage"
+                alt="Selected Image"
+                class="img-fluid mr-2"
+                style="max-width: 500px"
+              />
+              <button
+                class="btn btn-danger btn-sm delete-button"
+                (click)="removeImage()"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="d-flex mb-3 justify-content-end">
+            <div class="pe-3">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="closeDialog()"
+              >
+                Hủy
+              </button>
+            </div>
+
+            <div class="pb-3">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                (click)="processUpdateForm()"
+              >
+                Cập nhật
               </button>
             </div>
           </div>

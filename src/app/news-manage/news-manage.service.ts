@@ -46,8 +46,21 @@ export class NewsManageService {
       headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
     }
     return this.http.delete(environment.apiUrl + '/api/detele-news?id=' + id, options).pipe(
-      map((item:any)=> item.response.data)
+      map((item: any) => item.response.data)
     )
+  }
+
+  getNewsById(id: number): Observable<any> {
+    return this.http.get(environment.apiUrl + "/api/get-news-detail?id=" + id).pipe(
+      map((item: any) => item.response.data)
+    )
+  }
+
+  updateNews(data: FormData, id: number): Observable<any> {
+    const options = {
+      headers: new HttpHeaders().append("Authorization", "Bearer " + this.getToken()),
+    }
+    return this.http.put(environment.apiUrl + '/api/update-news?id=' + id, data, options)
   }
 
 }
