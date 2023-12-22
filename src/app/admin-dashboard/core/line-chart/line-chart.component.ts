@@ -12,7 +12,7 @@ export class LineChartComponent {
   @Input() heightChart!: any;
   @Input() lineChartData: any;
   public lineChartOptions: ChartOptions<'line'> = {
-    responsive: false
+    responsive: true
   };
   public lineChartLegend = true;
 }
