@@ -25,12 +25,8 @@ export const navbarData = [
         label: 'News'
     },
     {
-        routeLink: '',
-        icon: 'fal fa-camera',
-        label: 'Media'
-    }, {
-        routeLink: '',
+        routeLink: 'config',
         icon: 'fal fa-cog',
-        label: 'Setting'
+        label: 'Config'
     }
 ]

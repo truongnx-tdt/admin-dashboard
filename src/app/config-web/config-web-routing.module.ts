@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { OrdePageComponent } from './orde-page/orde-page.component';
+import { ConfigWebComponent } from './config-web/config-web.component';
 
 const routes: Routes = [
   {
-    path: '', component: OrdePageComponent, data: {breadcrumb: 'Đơn đặt hàng'}
+    path: '', component: ConfigWebComponent, data: { breadcrumb: 'Config' }
   }
 ];
 
@@ -12,4 +12,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class OrderManagerRoutingModule { }
+export class ConfigWebRoutingModule { }

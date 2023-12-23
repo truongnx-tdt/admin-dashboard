@@ -9,7 +9,7 @@ const routes: Routes = [
     path: '', component: TrangChuComponent, data: { breadcrumb: { label: "Trang chủ" } },
     children: [
       {
-        path: 'dashboard', component: DashboardComponent,
+        path: 'dashboard', component: DashboardComponent,data: { breadcrumb: { label: "Thống kê" } },
       },
       {
         path: 'product', loadChildren: () => import('./product-share/product-share.module').then(m => m.ProductShareModule),
@@ -31,6 +31,13 @@ const routes: Routes = [
       },
       {
         path: 'news', loadChildren: () => import('../news-manage/news-manage.module').then(m => m.NewsManageModule),
+        data: {
+          breadcrumb: { skip: true, alias: 'mentoarsAdd' }
+        }
+      },
+      {
+        path: 'config',
+        loadChildren: () => import('../config-web/config-web.module').then(m => m.ConfigWebModule),
         data: {
           breadcrumb: { skip: true, alias: 'mentoarsAdd' }
         }

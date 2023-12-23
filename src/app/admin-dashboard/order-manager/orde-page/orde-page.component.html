@@ -21,9 +21,9 @@
       >
         <ng-template pTemplate="caption">
           <div class="d-flex align-items-center justify-content-between">
-            <h5 class="m-2 bold">Manage Orders</h5>
+            <h5 class="m-2 bold">Quản lý đơn hàng</h5>
             <span>
-              Search:
+              Tìm kiếm:
               <input
                 pInputText
                 type="text"
@@ -40,22 +40,22 @@
           <tr>
             <th style="width: 5rem"></th>
             <th pSortableColumn="orderId">
-              Order Id <p-sortIcon field="orderId"></p-sortIcon>
+              Mã DH <p-sortIcon field="orderId"></p-sortIcon>
             </th>
             <th pSortableColumn="customerName">
-              Customer Name <p-sortIcon field="customerName"></p-sortIcon>
+              Tên khách hàng <p-sortIcon field="customerName"></p-sortIcon>
             </th>
             <th pSortableColumn="customerPhone">
-              Phone <p-sortIcon field="customerPhone"></p-sortIcon>
+              Số ĐT <p-sortIcon field="customerPhone"></p-sortIcon>
             </th>
             <th pSortableColumn="customerEmail">
               Email <p-sortIcon field="customerEmail"></p-sortIcon>
             </th>
             <th pSortableColumn="methodPayment">
-              Payment <p-sortIcon field="methodPayment"></p-sortIcon>
+              Thanh toán <p-sortIcon field="methodPayment"></p-sortIcon>
             </th>
             <th pSortableColumn="statusOrder">
-              Status <p-sortIcon field="statusOrder"></p-sortIcon>
+              Trạng thái <p-sortIcon field="statusOrder"></p-sortIcon>
               <p-columnFilter
                 field="statusOrder"
                 matchMode="equals"
@@ -84,22 +84,22 @@
               </p-columnFilter>
             </th>
             <th pSortableColumn="statusReceive">
-              Status Receive <p-sortIcon field="statusReceive"></p-sortIcon>
+              Nhận hàng <p-sortIcon field="statusReceive"></p-sortIcon>
             </th>
             <th pSortableColumn="totalAmount">
-              Amount <p-sortIcon field="totalAmount"></p-sortIcon>
+              Tổng tiền <p-sortIcon field="totalAmount"></p-sortIcon>
             </th>
             <th pSortableColumn="reciveType">
-              Receive Type <p-sortIcon field="reciveType"></p-sortIcon>
+              Hình thức nhận <p-sortIcon field="reciveType"></p-sortIcon>
             </th>
             <th pSortableColumn="note">
-              Note <p-sortIcon field="note"></p-sortIcon>
+              Ghi chú <p-sortIcon field="note"></p-sortIcon>
             </th>
             <th pSortableColumn="addressReceive">
-              Address Receive <p-sortIcon field="addressReceive"></p-sortIcon>
+              Địa chỉ nhận hàng <p-sortIcon field="addressReceive"></p-sortIcon>
             </th>
             <th pSortableColumn="orderDateAt">
-              Order Date <p-sortIcon field="orderDateAt"></p-sortIcon>
+              Ngày đặt hàng <p-sortIcon field="orderDateAt"></p-sortIcon>
             </th>
           </tr>
         </ng-template>
@@ -116,7 +116,7 @@
               ></button>
             </td>
             <td>
-              <strong>{{ product.orderId }}</strong>
+              <strong style="font-size: 10px;">{{ product.orderId }}</strong>
             </td>
             <td>{{ product.customerName }}</td>
             <td style="color: red">{{ product.customerPhone }}</td>
@@ -163,7 +163,9 @@
             </td>
             <td class="d-flex">
               <button
-              *ngIf="product.statusOrder !== '0' || product.statusReceive !== 1"
+                *ngIf="
+                  product.statusOrder !== '0' || product.statusReceive !== 1
+                "
                 pButton
                 pRipple
                 icon="pi pi-pencil"
@@ -195,18 +197,18 @@
                     <tr>
                       <th style="width: 10rem">#</th>
                       <th pSortableColumn="productName">
-                        Product Name
+                        Tên sản phẩm
                         <p-sortIcon field="productName"></p-sortIcon>
                       </th>
                       <th pSortableColumn="quantity">
-                        Quantity
+                        số lượng
                         <p-sortIcon field="quantity"></p-sortIcon>
                       </th>
                       <th pSortableColumn="price">
-                        Price <p-sortIcon field="price"></p-sortIcon>
+                        Giá <p-sortIcon field="price"></p-sortIcon>
                       </th>
                       <th pSortableColumn="price">
-                        Total <p-sortIcon field="price"></p-sortIcon>
+                        Tổng tiền <p-sortIcon field="price"></p-sortIcon>
                       </th></tr
                   ></ng-template>
 
@@ -258,18 +260,18 @@
 >
   <ng-template pTemplate="content">
     <div class="card">
-      <h5 class="card-title px-2">Order Detail</h5>
+      <h5 class="card-title px-2">Chi tiết đơn hàng</h5>
       <div class="card-body">
-        <label>OrderId:&nbsp;{{ product.orderId }}</label>
+        <label>Mã DH:&nbsp;{{ product.orderId }}</label>
 
         <div class="card">
           <div class="card-body">
             <div class="d-flex flex-column bd-highlight mb-3">
               <span
-                ><strong>Name:</strong>&nbsp;{{ product.customerName }}</span
+                ><strong>Tên KH:</strong>&nbsp;{{ product.customerName }}</span
               >
               <span
-                ><strong>Phone number:</strong>&nbsp;{{
+                ><strong>SDT:</strong>&nbsp;{{
                   product.customerPhone
                 }}</span
               >
@@ -277,7 +279,7 @@
                 ><strong>Email</strong>:&nbsp;{{ product.customerEmail }}</span
               >
               <span
-                ><strong>Payment method:</strong>&nbsp;{{
+                ><strong>Hình thức thanh toán:</strong>&nbsp;{{
                   product.methodPayment === "1" ? "VnPay" : "Trả sau"
                 }}
                 <img
@@ -289,18 +291,18 @@
                   height="20px"
               /></span>
               <span
-                ><strong>Receive type:</strong>&nbsp;
+                ><strong>Nhận hàng:</strong>&nbsp;
                 {{ product.reciveType === "0" ? "Tại nhà" : "Cửa hhàng" }}</span
               >
-              <span><strong>Note:</strong>&nbsp; {{ product.note }}</span>
+              <span><strong>Ghi chú:</strong>&nbsp; {{ product.note }}</span>
               <span
-                ><strong>Order Date At:</strong>&nbsp;
+                ><strong>Ngày đặt hàng:</strong>&nbsp;
                 {{ product.orderDateAt }}</span
               >
             </div>
 
             <div class="field">
-              <label><strong>Adrress Receive</strong></label>
+              <label><strong>Địa chỉ nhận hàng</strong></label>
               <textarea
                 pInputTextarea
                 [(ngModel)]="product.addressReceive"
@@ -311,7 +313,7 @@
               ></textarea>
             </div>
             <div class="field">
-              <label>Status</label>
+              <label>Tình trạng đơn hàng</label>
               <p-dropdown
                 [(ngModel)]="product.statusOrder"
                 [options]="statuses"
@@ -332,7 +334,7 @@
               </p-dropdown>
             </div>
             <div class="field">
-              <label>Receive Status </label>
+              <label>Trạng thái nhận hàng </label>
               <p-dropdown
                 [(ngModel)]="product.statusReceive"
                 [options]="statusesReceive"
@@ -362,10 +364,10 @@
           <table>
             <tr>
               <th>#</th>
-              <th>Product Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
-              <th>Total</th>
+              <th>Tên sp</th>
+              <th>Số lượng</th>
+              <th>Giá</th>
+              <th>Tổng</th>
             </tr>
 
             <tr
@@ -389,7 +391,7 @@
             </tr>
             <tr>
               <td colspan="4">
-                <strong style="color: #26debc">Total Amount:</strong>
+                <strong style="color: #26debc">Tổng tiền:</strong>
               </td>
               <td style="font-weight: bold; color: red">
                 {{ product.totalAmount | currency : "VND" }}
